@@ -2,14 +2,20 @@ name: Go
 
 on:
   push:
-    branches: [ "Aula_4" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "Aula_4" ]
+    branches: [ "*" ]
 
 jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      HOST: localhost
+      PORT: 5432
+      USER: root
+      PASSWORD: root
+      DBNAME: root
     strategy:
       matrix:
         go_version: ['1.18', '1.17', '>=1.18']
@@ -29,8 +35,8 @@ jobs:
 
     - name: Test
       run: go test -v main_test.go 
-      
-  
+
+
   build:
     needs: test
     runs-on: ${{ matrix.os }}
@@ -40,9 +46,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: go build -v main.go
-
-  docker:
-    needs: build
-    uses: ./.github/workflows/Docker.yml
-  
+      run: go build -v main.g
